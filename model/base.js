@@ -18,8 +18,8 @@ exports.createTabels = function () {
 	})
 };
 
-exports.insert = function (table, data) {
-	return table.create(data).then(row => {
+exports.insert = function (table, data, conf = {}) {
+	return table.create(data, conf).then(row => {
 		return row;
 	}).catch(error => {
 		throw error;
