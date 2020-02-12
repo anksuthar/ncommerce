@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
 	let offset = params.offset ? parseInt(params.offset) : 0;
 	let limit = params.limit ? parseInt(params.limit) : 10;
 	var search = {  status: { [db.Op.notLike]: 'deleted'} };
-	response = await  baseModel.findAndCountAll(UserModel, search, offset, limit);
+	response = await  baseModel.findAndCountAll(db.user, search, offset, limit);
 	res.status(200).send(response);
 });
 
@@ -28,12 +28,14 @@ router.get('/create-tabels', async (req, res, next) => {
 router.get('/create', async (req, res, next) => {
 	let insetedRespons;
 	try {
-		insetedRespons = await  baseModel.insert(UserModel,data);
+		let data = req.query;
+		insetedRespons = await baseModel.insert(db.user,data);
 	} catch(err) {
+		console.log(err);
 		res.status(500).send('respond with a error' + JSON.stringify(err));
 		return;
 	}
-	res.status(200).send('respond with a resource' + insetedRespons.id + 'firstName = '+ insetedRespons.firstName);
+	res.status(200).send('respond with a resource ' + insetedRespons.id + ' firstName = '+ insetedRespons.firstName);
 });
 
 module.exports = router;
