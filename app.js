@@ -34,10 +34,14 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  let errorStatus = err.status || 500;
+  if (req.xhr) {
+    res.status(errorStatus).send({ error: err.message });
+  } else {
+    // render the error page
+    res.status(errorStatus);
+    res.render('error');
+  }
 });
 
 module.exports = app;
