@@ -36,7 +36,10 @@ db.productTranslation = require('../model/productTranslation.js')(sequelize, Seq
 //Relations
 db.product.belongsTo(db.user); 
 db.categoryTranslation.belongsTo(db.category); 
-db.productTranslation.belongsTo(db.product); 
+db.productTranslation.belongsTo(db.product);
+
+db.categoryTranslations = db.category.hasMany(db.categoryTranslation, { as: 'category_translations' });
+
 
 db.product.belongsToMany(db.category, {through: 'category_product'});
 db.category.belongsToMany(db.product, {through: 'category_product'});

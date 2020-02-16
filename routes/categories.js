@@ -18,24 +18,22 @@ router.get('/', async (req, res, next) => {
 
 
 router.get('/create', async (req, res, next) => {
-	let insetedRespons;
-	let categoryTranslation = db.categoryTranslation;
 	try {
+		let insetedRespons;
+		let categoryTranslations = db.categoryTranslations;
 		let data = {
 			parentId: '',
 			path: '',
 			status: 'active',
-			categoryTranslation: [
+			category_translations1: [
 				{name: 'Male',content: ''},
 				{name: 'Female',content: ''}
 			]
 		};
-		let conf = {include: [categoryTranslation]};
+		let conf = {include: categoryTranslations };
 		insetedRespons = await baseModel.insert(relatedModel, data, conf);
 	} catch(err) {
-		console.log(err);
-		res.status(500).send('respond with a error' + JSON.stringify(err));
-		return;
+		next(err);
 	}
 	res.status(200).send('respond with a resource ' + insetedRespons.id);
 });
